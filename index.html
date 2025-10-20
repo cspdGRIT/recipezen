@@ -405,6 +405,101 @@
             color: #f5576c;
         }
 
+        /* Filter Section */
+        .filter-section {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+            margin-bottom: 40px;
+        }
+
+        .filter-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .filter-header:hover {
+            color: #f5576c;
+        }
+
+        .filter-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .filter-content.open {
+            max-height: 500px;
+            margin-top: 20px;
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .filter-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2d3748;
+            font-size: 0.95em;
+        }
+
+        .filter-select {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 0.95em;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: #f5576c;
+            box-shadow: 0 0 0 3px rgba(245, 87, 108, 0.1);
+        }
+
+        /* Recipe Tags */
+        .recipe-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 10px 0;
+        }
+
+        .tag {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e2e8f0 100%);
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .tag.veg {
+            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+            color: #166534;
+        }
+
+        .tag.vegan {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            color: #065f46;
+        }
+
+        .tag.non-veg {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            color: #991b1b;
+        }
+
         /* Leaderboard */
         .leaderboard-section {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -701,20 +796,27 @@
                 <div class="recipe-image">📝</div>
                 <div class="recipe-content">
                     <h3 class="recipe-title">1. Share Your Recipe</h3>
-                    <p style="color: #718096;">Use our smart form or paste your recipe text. Our AI will format it beautifully!</p>
+                    <p style="color: #718096;">Use our smart form or paste your recipe text. Our AI will format it beautifully with all dietary info!</p>
+                </div>
+            </div>
+            <div class="recipe-card" style="cursor: default;">
+                <div class="recipe-image">🔍</div>
+                <div class="recipe-content">
+                    <h3 class="recipe-title">2. Smart Categorization</h3>
+                    <p style="color: #718096;">Tag your recipe by diet type, cuisine, spice level, and more. Help others discover it easily!</p>
                 </div>
             </div>
             <div class="recipe-card" style="cursor: default;">
                 <div class="recipe-image">👍</div>
                 <div class="recipe-content">
-                    <h3 class="recipe-title">2. Community Votes</h3>
-                    <p style="color: #718096;">Other foodies try your recipe and vote. Get feedback and climb the leaderboard!</p>
+                    <h3 class="recipe-title">3. Community Votes</h3>
+                    <p style="color: #718096;">Foodies try your recipe and vote. Get feedback and climb the leaderboard!</p>
                 </div>
             </div>
             <div class="recipe-card" style="cursor: default;">
                 <div class="recipe-image">🏆</div>
                 <div class="recipe-content">
-                    <h3 class="recipe-title">3. Win Prizes</h3>
+                    <h3 class="recipe-title">4. Win Prizes</h3>
                     <p style="color: #718096;">Top recipes each month win cash, gift cards, cooking gear, and featured spots!</p>
                 </div>
             </div>
@@ -742,15 +844,98 @@
                         </div>
 
                         <div class="form-group">
-                            <label>Category *</label>
+                            <label>Meal Type *</label>
                             <select required>
-                                <option value="">Select a category</option>
+                                <option value="">Select meal type</option>
                                 <option value="breakfast">🍳 Breakfast</option>
                                 <option value="lunch">🥘 Lunch</option>
                                 <option value="dinner">🍜 Dinner</option>
                                 <option value="dessert">🍰 Dessert</option>
                                 <option value="snacks">🍿 Snacks</option>
                                 <option value="beverages">🥤 Beverages</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Diet Type *</label>
+                            <select required>
+                                <option value="">Select diet type</option>
+                                <option value="vegetarian">🥬 Vegetarian (No Meat/Fish)</option>
+                                <option value="vegan">🌱 Vegan (No Animal Products)</option>
+                                <option value="non-veg">🍗 Non-Vegetarian</option>
+                                <option value="eggetarian">🥚 Eggetarian (Veg + Eggs)</option>
+                                <option value="jain">🙏 Jain (No Root Vegetables)</option>
+                                <option value="pescatarian">🐟 Pescatarian (Fish Only)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Cuisine Type</label>
+                            <select>
+                                <option value="">Select cuisine</option>
+                                <option value="indian">🇮🇳 Indian</option>
+                                <option value="chinese">🇨🇳 Chinese</option>
+                                <option value="italian">🇮🇹 Italian</option>
+                                <option value="mexican">🇲🇽 Mexican</option>
+                                <option value="thai">🇹🇭 Thai</option>
+                                <option value="continental">🌍 Continental</option>
+                                <option value="middle-eastern">🇦🇪 Middle Eastern</option>
+                                <option value="fusion">🌐 Fusion</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Dietary Preferences (Select all that apply)</label>
+                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 10px;">
+                                <label style="display: flex; align-items: center; gap: 8px; font-weight: normal;">
+                                    <input type="checkbox" value="gluten-free"> Gluten-Free
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px; font-weight: normal;">
+                                    <input type="checkbox" value="dairy-free"> Dairy-Free
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px; font-weight: normal;">
+                                    <input type="checkbox" value="keto"> Keto-Friendly
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px; font-weight: normal;">
+                                    <input type="checkbox" value="low-carb"> Low-Carb
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px; font-weight: normal;">
+                                    <input type="checkbox" value="high-protein"> High-Protein
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px; font-weight: normal;">
+                                    <input type="checkbox" value="sugar-free"> Sugar-Free
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Difficulty Level</label>
+                            <select>
+                                <option value="">Select difficulty</option>
+                                <option value="beginner">⭐ Beginner</option>
+                                <option value="intermediate">⭐⭐ Intermediate</option>
+                                <option value="advanced">⭐⭐⭐ Advanced</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Spice Level</label>
+                            <select>
+                                <option value="">Select spice level</option>
+                                <option value="mild">🌶️ Mild</option>
+                                <option value="medium">🌶️🌶️ Medium</option>
+                                <option value="hot">🌶️🌶️🌶️ Hot</option>
+                                <option value="extra-hot">🌶️🌶️🌶️🌶️ Extra Hot</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Cost Estimate</label>
+                            <select>
+                                <option value="">Select cost level</option>
+                                <option value="budget">💰 Budget-Friendly (Under ₹100)</option>
+                                <option value="moderate">💰💰 Moderate (₹100-300)</option>
+                                <option value="premium">💰💰💰 Premium (₹300+)</option>
                             </select>
                         </div>
 
@@ -816,7 +1001,87 @@
         <h2 class="section-title">🔥 Trending Recipes This Week</h2>
         <p class="section-subtitle">Most loved recipes by our community of food enthusiasts</p>
         
-        <div class="recipes-grid fade-in">
+        <!-- Filter Section -->
+        <div class="filter-section fade-in">
+            <div class="filter-header" onclick="toggleFilters()">
+                <span style="font-size: 1.2em; font-weight: 600;">🔍 Filter Recipes</span>
+                <span id="filterToggle" style="font-size: 1.5em;">▼</span>
+            </div>
+            <div id="filterContent" class="filter-content">
+                <div class="filter-grid">
+                    <div class="filter-group">
+                        <label>Diet Type</label>
+                        <select class="filter-select">
+                            <option value="">All Diets</option>
+                            <option value="vegetarian">🥬 Vegetarian</option>
+                            <option value="vegan">🌱 Vegan</option>
+                            <option value="non-veg">🍗 Non-Veg</option>
+                            <option value="eggetarian">🥚 Eggetarian</option>
+                            <option value="jain">🙏 Jain</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label>Cuisine</label>
+                        <select class="filter-select">
+                            <option value="">All Cuisines</option>
+                            <option value="indian">🇮🇳 Indian</option>
+                            <option value="chinese">🇨🇳 Chinese</option>
+                            <option value="italian">🇮🇹 Italian</option>
+                            <option value="mexican">🇲🇽 Mexican</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label>Meal Type</label>
+                        <select class="filter-select">
+                            <option value="">All Meals</option>
+                            <option value="breakfast">🍳 Breakfast</option>
+                            <option value="lunch">🥘 Lunch</option>
+                            <option value="dinner">🍜 Dinner</option>
+                            <option value="dessert">🍰 Dessert</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label>Difficulty</label>
+                        <select class="filter-select">
+                            <option value="">Any Level</option>
+                            <option value="beginner">⭐ Beginner</option>
+                            <option value="intermediate">⭐⭐ Intermediate</option>
+                            <option value="advanced">⭐⭐⭐ Advanced</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label>Cooking Time</label>
+                        <select class="filter-select">
+                            <option value="">Any Time</option>
+                            <option value="quick">⚡ Quick (< 30 min)</option>
+                            <option value="medium">⏱️ Medium (30-60 min)</option>
+                            <option value="long">🕐 Long (> 60 min)</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label>Cost</label>
+                        <select class="filter-select">
+                            <option value="">Any Budget</option>
+                            <option value="budget">💰 Budget</option>
+                            <option value="moderate">💰💰 Moderate</option>
+                            <option value="premium">💰💰💰 Premium</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="margin-top: 20px; display: flex; gap: 15px;">
+                    <button class="btn btn-primary" style="padding: 12px 30px; font-size: 1em;">Apply Filters</button>
+                    <button class="btn btn-secondary" style="padding: 12px 30px; font-size: 1em;">Clear All</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="recipes-grid fade-in" style="margin-top: 40px;">
             <div class="recipe-card">
                 <div class="recipe-image">🍛</div>
                 <div class="recipe-content">
@@ -826,9 +1091,16 @@
                             <p class="recipe-author">by Chef Priya</p>
                         </div>
                     </div>
+                    <div class="recipe-tags">
+                        <span class="tag non-veg">🍗 Non-Veg</span>
+                        <span class="tag">🇮🇳 Indian</span>
+                        <span class="tag">🌶️🌶️ Medium Spice</span>
+                        <span class="tag">⭐⭐ Intermediate</span>
+                    </div>
                     <div class="recipe-stats">
                         <span class="recipe-stat">⏱️ 45 min</span>
                         <span class="recipe-stat">👥 4 servings</span>
+                        <span class="recipe-stat">💰💰 Moderate</span>
                     </div>
                     <p style="color: #718096; font-size: 0.95em;">Authentic North Indian curry with rich, creamy tomato gravy that melts in your mouth.</p>
                     <div class="vote-section">
@@ -850,9 +1122,15 @@
                             <p class="recipe-author">by Baking Queen</p>
                         </div>
                     </div>
+                    <div class="recipe-tags">
+                        <span class="tag veg">🥬 Vegetarian</span>
+                        <span class="tag">🌍 Continental</span>
+                        <span class="tag">⭐ Beginner</span>
+                    </div>
                     <div class="recipe-stats">
                         <span class="recipe-stat">⏱️ 60 min</span>
                         <span class="recipe-stat">👥 8 servings</span>
+                        <span class="recipe-stat">💰 Budget</span>
                     </div>
                     <p style="color: #718096; font-size: 0.95em;">Moist, fluffy, and incredibly delicious cake without eggs. Perfect for vegetarians!</p>
                     <div class="vote-section">
@@ -874,9 +1152,16 @@
                             <p class="recipe-author">by HealthyEats</p>
                         </div>
                     </div>
+                    <div class="recipe-tags">
+                        <span class="tag vegan">🌱 Vegan</span>
+                        <span class="tag">🇬🇷 Mediterranean</span>
+                        <span class="tag">High Protein</span>
+                        <span class="tag">Gluten-Free</span>
+                    </div>
                     <div class="recipe-stats">
                         <span class="recipe-stat">⏱️ 25 min</span>
                         <span class="recipe-stat">👥 2 servings</span>
+                        <span class="recipe-stat">💰💰 Moderate</span>
                     </div>
                     <p style="color: #718096; font-size: 0.95em;">Fresh, nutritious, and bursting with Mediterranean flavors. Perfect healthy lunch!</p>
                     <div class="vote-section">
@@ -1072,6 +1357,57 @@
         </div>
     </div>
 
+    <!-- Why Categorization Matters -->
+    <div class="container">
+        <h2 class="section-title">🎯 Why Smart Categorization Matters</h2>
+        <p class="section-subtitle">Making every recipe discoverable by the right audience</p>
+        
+        <div class="features-grid fade-in">
+            <div class="feature-card">
+                <div class="icon">🥬</div>
+                <h3>Dietary Inclusivity</h3>
+                <p>Vegetarian, Vegan, Jain, or Non-Veg - everyone finds recipes that match their eating habits and beliefs.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="icon">🌍</div>
+                <h3>Cultural Diversity</h3>
+                <p>From Indian to Italian, Chinese to Continental - explore authentic recipes from cuisines worldwide.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="icon">⚡</div>
+                <h3>Time-Based Discovery</h3>
+                <p>Quick 15-min meals or elaborate 2-hour feasts - find recipes that fit your schedule perfectly.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="icon">💰</div>
+                <h3>Budget-Friendly Options</h3>
+                <p>Budget meals under ₹100 or premium dishes - recipes for every pocket and occasion.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="icon">🌶️</div>
+                <h3>Spice Level Control</h3>
+                <p>From mild to extra hot - perfect for all palates, from kids to spice lovers.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="icon">💪</div>
+                <h3>Health Goals Aligned</h3>
+                <p>Keto, low-carb, high-protein, gluten-free - recipes that match your wellness journey.</p>
+            </div>
+        </div>
+
+        <div style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); padding: 40px; border-radius: 20px; margin-top: 50px; text-align: center;">
+            <h3 style="color: #2d3748; font-size: 1.8em; margin-bottom: 15px;">📊 Smart Filtering = Better Discovery</h3>
+            <p style="color: #718096; font-size: 1.15em; line-height: 1.8; max-width: 800px; margin: 0 auto;">
+                Our advanced categorization ensures your recipe reaches the right audience. A vegan looking for quick breakfast ideas will find your 15-minute smoothie bowl instantly. A non-vegetarian searching for premium dinner recipes will discover your signature butter chicken. <strong>Better discovery = More votes = Higher chances of winning!</strong>
+            </p>
+        </div>
+    </div>
+
     <!-- CTA Section -->
     <div class="hero" style="padding: 80px 20px;">
         <div class="hero-content">
@@ -1102,6 +1438,20 @@
             
             event.target.classList.add('active');
             document.getElementById(tabName).classList.add('active');
+        }
+
+        // Toggle filters
+        function toggleFilters() {
+            const content = document.getElementById('filterContent');
+            const toggle = document.getElementById('filterToggle');
+            
+            if (content.classList.contains('open')) {
+                content.classList.remove('open');
+                toggle.textContent = '▼';
+            } else {
+                content.classList.add('open');
+                toggle.textContent = '▲';
+            }
         }
 
         // Add ingredient field
