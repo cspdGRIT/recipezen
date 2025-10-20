@@ -743,6 +743,14 @@
                 grid-template-columns: 1fr;
             }
 
+            .filter-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-content.open {
+                max-height: 800px;
+            }
+
             .floating-btn {
                 bottom: 20px;
                 right: 20px;
@@ -757,6 +765,10 @@
 
             .leaderboard-item {
                 padding: 20px;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
             }
         }
 
@@ -977,18 +989,18 @@
                 <div id="ai" class="form-content">
                     <div class="ai-parse-section">
                         <h4>🤖 Paste Your Recipe Text</h4>
-                        <p style="color: #718096; margin-bottom: 20px;">Copy and paste your recipe from anywhere! Our AI will extract ingredients, steps, and format it perfectly.</p>
+                        <p style="color: #718096; margin-bottom: 20px;">Copy and paste your recipe from anywhere! Our AI will extract ingredients, steps, and automatically categorize it by diet type, cuisine, difficulty, and more.</p>
                         
                         <div class="form-group">
-                            <textarea placeholder="Paste your recipe here... Include everything: ingredients, quantities, steps, cooking time, etc.&#10;&#10;Example:&#10;My Famous Chocolate Cake&#10;Ingredients: 2 cups flour, 1 cup sugar, 3 eggs...&#10;Instructions: Preheat oven to 350°F. Mix dry ingredients..." style="min-height: 300px;"></textarea>
+                            <textarea placeholder="Paste your recipe here... Include everything: ingredients, quantities, steps, cooking time, etc.&#10;&#10;Example:&#10;My Famous Chocolate Cake (Vegetarian, Easy, 60 minutes)&#10;Ingredients: 2 cups flour, 1 cup sugar, 3 eggs...&#10;Instructions: Preheat oven to 350°F. Mix dry ingredients..." style="min-height: 300px;"></textarea>
                         </div>
 
-                        <button type="button" class="btn btn-primary" style="width: 100%;">✨ Let AI Format My Recipe</button>
+                        <button type="button" class="btn btn-primary" style="width: 100%;">✨ Let AI Format & Categorize My Recipe</button>
                     </div>
 
                     <div style="margin-top: 30px; padding: 20px; background: #f7fafc; border-radius: 10px;">
                         <p style="color: #718096; font-size: 0.95em;">
-                            <strong>💡 Pro Tip:</strong> The AI works best when you include ingredient quantities, cooking times, and clear step-by-step instructions. It automatically detects recipe name, category, and organizes everything beautifully!
+                            <strong>💡 Pro Tip:</strong> The AI automatically detects diet type (veg/non-veg/vegan), cuisine style, spice level, and difficulty. Mention ingredient quantities, cooking times, and clear step-by-step instructions for best results. It organizes everything beautifully with smart tags!
                         </p>
                     </div>
                 </div>
@@ -1008,6 +1020,26 @@
                 <span id="filterToggle" style="font-size: 1.5em;">▼</span>
             </div>
             <div id="filterContent" class="filter-content">
+                <div style="background: linear-gradient(135deg, #f5f7fa 0%, #e2e8f0 100%); padding: 20px; border-radius: 15px; margin-bottom: 25px;">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; text-align: center;">
+                        <div>
+                            <div style="font-size: 2em; font-weight: 800; color: #f5576c;">6+</div>
+                            <div style="font-size: 0.9em; color: #718096;">Diet Types</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 2em; font-weight: 800; color: #f5576c;">8+</div>
+                            <div style="font-size: 0.9em; color: #718096;">Cuisines</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 2em; font-weight: 800; color: #f5576c;">4</div>
+                            <div style="font-size: 0.9em; color: #718096;">Spice Levels</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 2em; font-weight: 800; color: #f5576c;">3</div>
+                            <div style="font-size: 0.9em; color: #718096;">Difficulty Levels</div>
+                        </div>
+                    </div>
+                </div>
                 <div class="filter-grid">
                     <div class="filter-group">
                         <label>Diet Type</label>
@@ -1256,7 +1288,7 @@
     <div class="prizes-section">
         <div class="container">
             <h2 class="section-title">🎁 Monthly Prizes & Rewards</h2>
-            <p class="section-subtitle">Amazing prizes for top contributors every month!</p>
+            <p class="section-subtitle">Amazing prizes for top contributors every month - Overall winners + Category champions!</p>
             
             <div class="prizes-grid fade-in">
                 <div class="prize-card">
@@ -1291,7 +1323,7 @@
                     <div class="prize-icon">🎖️</div>
                     <h3 class="prize-title">Category Winners</h3>
                     <div class="prize-value">₹1,000</div>
-                    <p class="prize-desc">Best recipe in each category gets cash + specialty badge + featured spot</p>
+                    <p class="prize-desc">Best in Veg, Non-Veg, Vegan, Desserts, Quick Meals & more categories. Cash + specialty badge + featured spot</p>
                 </div>
 
                 <div class="prize-card">
