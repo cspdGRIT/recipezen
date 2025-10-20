@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RecipeVault - Share, Vote, Win!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #2d3748;
+            overflow-x: hidden;
+            background: #f7fafc;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 50%, #ff9a56 100%);
+            color: white;
+            padding: 120px 20px 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '🍳🥘🍜🍕🥗';
+            position: absolute;
+            font-size: 100px;
+            opacity: 0.1;
+            top: 10%;
+            left: 5%;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .hero::after {
+            content: '🎂🍰🥙🍱🍛';
+            position: absolute;
+            font-size: 100px;
+            opacity: 0.1;
+            bottom: 10%;
+            right: 5%;
+            animation: float 10s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(5deg); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 4em;
+            margin-bottom: 20px;
+            font-weight: 800;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .hero .tagline {
+            font-size: 1.6em;
+            margin-bottom: 15px;
+            font-weight: 300;
+            opacity: 0.95;
+            animation: fadeInUp 0.8s ease-out 0.2s backwards;
+        }
+
+        .hero .subtitle {
+            font-size: 1.15em;
+            margin-bottom: 30px;
+            opacity: 0.9;
+            animation: fadeInUp 0.8s ease-out 0.4s backwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 40px;
+            animation: fadeInUp 0.8s ease-out 0.6s backwards;
+        }
+
+        .btn {
+            padding: 16px 40px;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: white;
+            color: #f5576c;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            color: #f5576c;
+            transform: translateY(-3px);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.8em;
+            margin-bottom: 20px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #f5576c 0%, #ff9a56 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.2em;
+            color: #718096;
+            margin-bottom: 60px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Recipe Submission Form */
+        .recipe-form-section {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 80px 20px;
+        }
+
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 50px;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .form-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 40px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .tab {
+            padding: 15px 30px;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #718096;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab.active {
+            color: #f5576c;
+            border-bottom-color: #f5576c;
+        }
+
+        .tab:hover {
+            color: #f5576c;
+        }
+
+        .form-content {
+            display: none;
+        }
+
+        .form-content.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #f5576c;
+            box-shadow: 0 0 0 3px rgba(245, 87, 108, 0.1);
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .ingredients-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .ingredient-item {
+            display: flex;
+            gap: 10px;
+        }
+
+        .ingredient-item input {
+            flex: 1;
+        }
+
+        .add-ingredient {
+            background: #f5576c;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+
+        .add-ingredient:hover {
+            background: #e04d62;
+            transform: translateY(-2px);
+        }
+
+        .ai-parse-section {
+            background: #f7fafc;
+            padding: 30px;
+            border-radius: 15px;
+            border: 2px dashed #cbd5e0;
+        }
+
+        .ai-parse-section h4 {
+            color: #f5576c;
+            margin-bottom: 15px;
+        }
+
+        /* Recipe Cards */
+        .recipes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .recipe-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .recipe-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(245, 87, 108, 0.15);
+        }
+
+        .recipe-image {
+            width: 100%;
+            height: 220px;
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4em;
+        }
+
+        .recipe-content {
+            padding: 25px;
+        }
+
+        .recipe-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 15px;
+        }
+
+        .recipe-title {
+            font-size: 1.4em;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 5px;
+        }
+
+        .recipe-author {
+            color: #718096;
+            font-size: 0.9em;
+        }
+
+        .recipe-stats {
+            display: flex;
+            gap: 15px;
+            margin: 15px 0;
+            font-size: 0.9em;
+            color: #718096;
+        }
+
+        .recipe-stat {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .vote-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #e2e8f0;
+            margin-top: 15px;
+        }
+
+        .vote-btn {
+            background: linear-gradient(135deg, #f5576c 0%, #ff9a56 100%);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .vote-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(245, 87, 108, 0.3);
+        }
+
+        .vote-count {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: #f5576c;
+        }
+
+        /* Leaderboard */
+        .leaderboard-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 80px 20px;
+            color: white;
+        }
+
+        .leaderboard {
+            max-width: 900px;
+            margin: 40px auto 0;
+        }
+
+        .leaderboard-item {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            margin-bottom: 15px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            transition: all 0.3s;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .leaderboard-item:hover {
+            transform: translateX(10px);
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .rank {
+            font-size: 2.5em;
+            font-weight: 800;
+            width: 80px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 15px;
+        }
+
+        .rank.top-1 {
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: #2d3748;
+        }
+
+        .rank.top-2 {
+            background: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 100%);
+            color: #2d3748;
+        }
+
+        .rank.top-3 {
+            background: linear-gradient(135deg, #cd7f32 0%, #daa06d 100%);
+            color: white;
+        }
+
+        .leader-info {
+            flex: 1;
+        }
+
+        .leader-name {
+            font-size: 1.4em;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .leader-stats {
+            opacity: 0.9;
+            display: flex;
+            gap: 20px;
+        }
+
+        .leader-badge {
+            background: rgba(255, 215, 0, 0.3);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+
+        /* Prizes Section */
+        .prizes-section {
+            background: #f7fafc;
+            padding: 80px 20px;
+        }
+
+        .prizes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .prize-card {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            transition: all 0.3s;
+            border: 3px solid transparent;
+        }
+
+        .prize-card:hover {
+            transform: translateY(-10px);
+            border-color: #f5576c;
+            box-shadow: 0 15px 40px rgba(245, 87, 108, 0.15);
+        }
+
+        .prize-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .prize-title {
+            font-size: 1.4em;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .prize-value {
+            font-size: 2em;
+            color: #f5576c;
+            font-weight: 800;
+            margin: 15px 0;
+        }
+
+        .prize-desc {
+            color: #718096;
+            line-height: 1.6;
+        }
+
+        /* Revenue Model */
+        .revenue-section {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 80px 20px;
+        }
+
+        .revenue-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: 40px auto;
+        }
+
+        .revenue-card {
+            background: white;
+            padding: 35px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+        }
+
+        .revenue-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .revenue-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .revenue-card h4 {
+            color: #2d3748;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .revenue-card p {
+            color: #718096;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        .footer {
+            background: #2d3748;
+            color: white;
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+        .footer p {
+            margin: 12px 0;
+            opacity: 0.9;
+        }
+
+        /* Floating ChaiCheers Button */
+        .floating-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 16px 32px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1em;
+            box-shadow: 0 10px 40px rgba(245, 87, 108, 0.4);
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+
+        .floating-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 50px rgba(245, 87, 108, 0.6);
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 10px 40px rgba(245, 87, 108, 0.4);
+            }
+            50% {
+                box-shadow: 0 10px 40px rgba(245, 87, 108, 0.7);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5em;
+            }
+
+            .hero .tagline {
+                font-size: 1.3em;
+            }
+
+            .section-title {
+                font-size: 2em;
+            }
+
+            .form-container {
+                padding: 30px 20px;
+            }
+
+            .recipes-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .floating-btn {
+                bottom: 20px;
+                right: 20px;
+                padding: 12px 24px;
+                font-size: 0.95em;
+            }
+
+            .rank {
+                font-size: 1.8em;
+                width: 60px;
+            }
+
+            .leaderboard-item {
+                padding: 20px;
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <div class="hero">
+        <div class="hero-content">
+            <h1>🍳 RecipeVault</h1>
+            <p class="tagline">Share Your Secret Recipes, Win Amazing Prizes!</p>
+            <p class="subtitle">The community-powered recipe platform where home chefs compete, share, and celebrate great food</p>
+            <div class="hero-buttons">
+                <button class="btn btn-primary" onclick="scrollToForm()">Share Your Recipe</button>
+                <button class="btn btn-secondary" onclick="scrollToLeaderboard()">View Leaderboard</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- How It Works -->
+    <div class="container">
+        <h2 class="section-title">🎯 How It Works</h2>
+        <p class="section-subtitle">Join thousands of home chefs in sharing, voting, and winning!</p>
+        
+        <div class="recipes-grid fade-in">
+            <div class="recipe-card" style="cursor: default;">
+                <div class="recipe-image">📝</div>
+                <div class="recipe-content">
+                    <h3 class="recipe-title">1. Share Your Recipe</h3>
+                    <p style="color: #718096;">Use our smart form or paste your recipe text. Our AI will format it beautifully!</p>
+                </div>
+            </div>
+            <div class="recipe-card" style="cursor: default;">
+                <div class="recipe-image">👍</div>
+                <div class="recipe-content">
+                    <h3 class="recipe-title">2. Community Votes</h3>
+                    <p style="color: #718096;">Other foodies try your recipe and vote. Get feedback and climb the leaderboard!</p>
+                </div>
+            </div>
+            <div class="recipe-card" style="cursor: default;">
+                <div class="recipe-image">🏆</div>
+                <div class="recipe-content">
+                    <h3 class="recipe-title">3. Win Prizes</h3>
+                    <p style="color: #718096;">Top recipes each month win cash, gift cards, cooking gear, and featured spots!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recipe Submission Form -->
+    <div class="recipe-form-section" id="recipeForm">
+        <div class="container">
+            <h2 class="section-title" style="color: white; -webkit-text-fill-color: white;">✨ Submit Your Recipe</h2>
+            <p class="section-subtitle" style="color: rgba(255,255,255,0.9);">Choose your preferred method to share your culinary masterpiece</p>
+            
+            <div class="form-container">
+                <div class="form-tabs">
+                    <button class="tab active" onclick="switchTab('manual')">📝 Manual Entry</button>
+                    <button class="tab" onclick="switchTab('ai')">🤖 AI Parser</button>
+                </div>
+
+                <!-- Manual Form -->
+                <div id="manual" class="form-content active">
+                    <form>
+                        <div class="form-group">
+                            <label>Recipe Name *</label>
+                            <input type="text" placeholder="e.g., Grandma's Secret Chicken Curry" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Category *</label>
+                            <select required>
+                                <option value="">Select a category</option>
+                                <option value="breakfast">🍳 Breakfast</option>
+                                <option value="lunch">🥘 Lunch</option>
+                                <option value="dinner">🍜 Dinner</option>
+                                <option value="dessert">🍰 Dessert</option>
+                                <option value="snacks">🍿 Snacks</option>
+                                <option value="beverages">🥤 Beverages</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Cooking Time</label>
+                            <input type="text" placeholder="e.g., 45 minutes">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Servings</label>
+                            <input type="number" placeholder="e.g., 4" min="1">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Ingredients *</label>
+                            <div class="ingredients-list" id="ingredientsList">
+                                <div class="ingredient-item">
+                                    <input type="text" placeholder="e.g., 2 cups rice">
+                                </div>
+                            </div>
+                            <button type="button" class="add-ingredient" onclick="addIngredient()">+ Add Ingredient</button>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Instructions *</label>
+                            <textarea placeholder="Step 1: Wash and soak rice for 30 minutes&#10;Step 2: Heat oil in a pan..." required></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Special Tips (Optional)</label>
+                            <textarea placeholder="Share any secret tips or variations..."></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 20px;">🚀 Publish Recipe</button>
+                    </form>
+                </div>
+
+                <!-- AI Parser -->
+                <div id="ai" class="form-content">
+                    <div class="ai-parse-section">
+                        <h4>🤖 Paste Your Recipe Text</h4>
+                        <p style="color: #718096; margin-bottom: 20px;">Copy and paste your recipe from anywhere! Our AI will extract ingredients, steps, and format it perfectly.</p>
+                        
+                        <div class="form-group">
+                            <textarea placeholder="Paste your recipe here... Include everything: ingredients, quantities, steps, cooking time, etc.&#10;&#10;Example:&#10;My Famous Chocolate Cake&#10;Ingredients: 2 cups flour, 1 cup sugar, 3 eggs...&#10;Instructions: Preheat oven to 350°F. Mix dry ingredients..." style="min-height: 300px;"></textarea>
+                        </div>
+
+                        <button type="button" class="btn btn-primary" style="width: 100%;">✨ Let AI Format My Recipe</button>
+                    </div>
+
+                    <div style="margin-top: 30px; padding: 20px; background: #f7fafc; border-radius: 10px;">
+                        <p style="color: #718096; font-size: 0.95em;">
+                            <strong>💡 Pro Tip:</strong> The AI works best when you include ingredient quantities, cooking times, and clear step-by-step instructions. It automatically detects recipe name, category, and organizes everything beautifully!
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Featured Recipes -->
+    <div class="container">
+        <h2 class="section-title">🔥 Trending Recipes This Week</h2>
+        <p class="section-subtitle">Most loved recipes by our community of food enthusiasts</p>
+        
+        <div class="recipes-grid fade-in">
+            <div class="recipe-card">
+                <div class="recipe-image">🍛</div>
+                <div class="recipe-content">
+                    <div class="recipe-header">
+                        <div>
+                            <h3 class="recipe-title">Butter Chicken Masala</h3>
+                            <p class="recipe-author">by Chef Priya</p>
+                        </div>
+                    </div>
+                    <div class="recipe-stats">
+                        <span class="recipe-stat">⏱️ 45 min</span>
+                        <span class="recipe-stat">👥 4 servings</span>
+                    </div>
+                    <p style="color: #718096; font-size: 0.95em;">Authentic North Indian curry with rich, creamy tomato gravy that melts in your mouth.</p>
+                    <div class="vote-section">
+                        <button class="vote-btn" onclick="vote(this)">
+                            <span>👍</span>
+                            <span>Vote</span>
+                        </button>
+                        <span class="vote-count">2,345 votes</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recipe-card">
+                <div class="recipe-image">🍰</div>
+                <div class="recipe-content">
+                    <div class="recipe-header">
+                        <div>
+                            <h3 class="recipe-title">Eggless Chocolate Cake</h3>
+                            <p class="recipe-author">by Baking Queen</p>
+                        </div>
+                    </div>
+                    <div class="recipe-stats">
+                        <span class="recipe-stat">⏱️ 60 min</span>
+                        <span class="recipe-stat">👥 8 servings</span>
+                    </div>
+                    <p style="color: #718096; font-size: 0.95em;">Moist, fluffy, and incredibly delicious cake without eggs. Perfect for vegetarians!</p>
+                    <div class="vote-section">
+                        <button class="vote-btn" onclick="vote(this)">
+                            <span>👍</span>
+                            <span>Vote</span>
+                        </button>
+                        <span class="vote-count">1,892 votes</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recipe-card">
+                <div class="recipe-image">🥗</div>
+                <div class="recipe-content">
+                    <div class="recipe-header">
+                        <div>
+                            <h3 class="recipe-title">Mediterranean Quinoa Bowl</h3>
+                            <p class="recipe-author">by HealthyEats</p>
+                        </div>
+                    </div>
+                    <div class="recipe-stats">
+                        <span class="recipe-stat">⏱️ 25 min</span>
+                        <span class="recipe-stat">👥 2 servings</span>
+                    </div>
+                    <p style="color: #718096; font-size: 0.95em;">Fresh, nutritious, and bursting with Mediterranean flavors. Perfect healthy lunch!</p>
+                    <div class="vote-section">
+                        <button class="vote-btn" onclick="vote(this)">
+                            <span>👍</span>
+                            <span>Vote</span>
+                        </button>
+                        <span class="vote-count">1,567 votes</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Leaderboard -->
+    <div class="leaderboard-section" id="leaderboard">
+        <div class="container">
+            <h2 class="section-title" style="color: white; -webkit-text-fill-color: white;">🏆 Monthly Leaderboard</h2>
+            <p class="section-subtitle" style="color: rgba(255,255,255,0.9);">Top recipe creators competing for amazing prizes this month</p>
+            
+            <div class="leaderboard fade-in">
+                <div class="leaderboard-item">
+                    <div class="rank top-1">1st</div>
+                    <div class="leader-info">
+                        <div class="leader-name">Chef Priya Sharma 👑</div>
+                        <div class="leader-stats">
+                            <span>12 recipes</span>
+                            <span>•</span>
+                            <span>8,459 votes</span>
+                            <span>•</span>
+                            <span class="leader-badge">🔥 On Fire!</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="leaderboard-item">
+                    <div class="rank top-2">2nd</div>
+                    <div class="leader-info">
+                        <div class="leader-name">Baking Queen 🥈</div>
+                        <div class="leader-stats">
+                            <span>10 recipes</span>
+                            <span>•</span>
+                            <span>7,234 votes</span>
+                            <span>•</span>
+                            <span class="leader-badge">🎂 Dessert Master</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="leaderboard-item">
+                    <div class="rank top-3">3rd</div>
+                    <div class="leader-info">
+                        <div class="leader-name">HealthyEats Guru 🥉</div>
+                        <div class="leader-stats">
+                            <span>8 recipes</span>
+                            <span>•</span>
+                            <span>6,891 votes</span>
+                            <span>•</span>
+                            <span class="leader-badge">🥗 Healthy Chef</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="leaderboard-item">
+                    <div class="rank">4th</div>
+                    <div class="leader-info">
+                        <div class="leader-name">Spice Master Raj</div>
+                        <div class="leader-stats">
+                            <span>9 recipes</span>
+                            <span>•</span>
+                            <span>5,678 votes</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="leaderboard-item">
+                    <div class="rank">5th</div>
+                    <div class="leader-info">
+                        <div class="leader-name">Quick Meals Mama</div>
+                        <div class="leader-stats">
+                            <span>7 recipes</span>
+                            <span>•</span>
+                            <span>4,923 votes</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Prizes -->
+    <div class="prizes-section">
+        <div class="container">
+            <h2 class="section-title">🎁 Monthly Prizes & Rewards</h2>
+            <p class="section-subtitle">Amazing prizes for top contributors every month!</p>
+            
+            <div class="prizes-grid fade-in">
+                <div class="prize-card">
+                    <div class="prize-icon">🥇</div>
+                    <h3 class="prize-title">1st Place</h3>
+                    <div class="prize-value">₹10,000</div>
+                    <p class="prize-desc">Cash prize + Premium cookware set + Featured on homepage + Verified Chef badge</p>
+                </div>
+
+                <div class="prize-card">
+                    <div class="prize-icon">🥈</div>
+                    <h3 class="prize-title">2nd Place</h3>
+                    <div class="prize-value">₹5,000</div>
+                    <p class="prize-desc">Cash prize + Kitchen appliance + Featured spot + Rising Star badge</p>
+                </div>
+
+                <div class="prize-card">
+                    <div class="prize-icon">🥉</div>
+                    <h3 class="prize-title">3rd Place</h3>
+                    <div class="prize-value">₹2,500</div>
+                    <p class="prize-desc">Cash prize + Gift vouchers + Featured in newsletter + Top Chef badge</p>
+                </div>
+
+                <div class="prize-card">
+                    <div class="prize-icon">🌟</div>
+                    <h3 class="prize-title">Top 10</h3>
+                    <div class="prize-value">₹500</div>
+                    <p class="prize-desc">Gift cards + Recipe book feature + Community recognition badge</p>
+                </div>
+
+                <div class="prize-card">
+                    <div class="prize-icon">🎖️</div>
+                    <h3 class="prize-title">Category Winners</h3>
+                    <div class="prize-value">₹1,000</div>
+                    <p class="prize-desc">Best recipe in each category gets cash + specialty badge + featured spot</p>
+                </div>
+
+                <div class="prize-card">
+                    <div class="prize-icon">⭐</div>
+                    <h3 class="prize-title">Weekly Star</h3>
+                    <div class="prize-value">₹250</div>
+                    <p class="prize-desc">Weekly featured recipe + Gift voucher + Social media shoutout</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Revenue Model -->
+    <div class="revenue-section">
+        <div class="container">
+            <h2 class="section-title" style="color: #2d3748;">💰 Revenue Model</h2>
+            <p class="section-subtitle" style="color: #718096;">How RecipeVault sustains prizes and grows the community</p>
+            
+            <div class="revenue-grid fade-in">
+                <div class="revenue-card">
+                    <div class="revenue-icon">👑</div>
+                    <h4>Premium Membership</h4>
+                    <p>₹199/month for ad-free experience, exclusive recipes, early access to contests, and download recipes as PDFs</p>
+                </div>
+
+                <div class="revenue-card">
+                    <div class="revenue-icon">📺</div>
+                    <h4>Brand Partnerships</h4>
+                    <p>Featured recipes sponsored by kitchen brands, ingredient suppliers, and cooking equipment manufacturers</p>
+                </div>
+
+                <div class="revenue-card">
+                    <div class="revenue-icon">🛒</div>
+                    <h4>Affiliate Commissions</h4>
+                    <p>Earn from ingredient delivery links, cookware recommendations, and cooking class partnerships</p>
+                </div>
+
+                <div class="revenue-card">
+                    <div class="revenue-icon">📚</div>
+                    <h4>Recipe Books</h4>
+                    <p>Monthly compilation of top recipes published as digital/physical books with revenue sharing</p>
+                </div>
+
+                <div class="revenue-card">
+                    <div class="revenue-icon">🎯</div>
+                    <h4>Sponsored Contests</h4>
+                    <p>Brands sponsor themed recipe contests with bigger prize pools and product promotions</p>
+                </div>
+
+                <div class="revenue-card">
+                    <div class="revenue-icon">👨‍🍳</div>
+                    <h4>Cooking Classes</h4>
+                    <p>Top creators host paid virtual cooking classes. Platform takes 20% commission</p>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 50px;">
+                <div style="background: white; display: inline-block; padding: 40px 60px; border-radius: 20px; box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15);">
+                    <h3 style="color: #f5576c; font-size: 2em; font-weight: 800; margin-bottom: 10px;">Expected Revenue: ₹5-15 Lakhs/Year</h3>
+                    <p style="color: #718096; font-size: 1.1em;">With 10,000+ active users and growing community engagement</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="hero" style="padding: 80px 20px;">
+        <div class="hero-content">
+            <h2 style="font-size: 2.5em; margin-bottom: 20px;">Join the Food Revolution! 🚀</h2>
+            <p style="font-size: 1.2em; margin-bottom: 40px; opacity: 0.95;">Share your recipes, earn recognition, win prizes, and connect with food lovers nationwide</p>
+            <div class="hero-buttons">
+                <button class="btn btn-primary" onclick="scrollToForm()">Share Your First Recipe</button>
+                <button class="btn btn-secondary">Download Mobile App</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p style="font-size: 1.3em; font-weight: 700;">RecipeVault</p>
+        <p>Where Home Chefs Become Champions 🏆</p>
+        <p style="margin-top: 30px; opacity: 0.7;">Share • Vote • Win • Celebrate</p>
+    </div>
+
+    <!-- Floating ChaiCheers Button -->
+    <a href="https://cspdgrit.github.io/chaicheers/" target="_blank" class="floating-btn">☕ ChaiCheers</a>
+
+    <script>
+        // Tab switching
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.form-content').forEach(c => c.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+        }
+
+        // Add ingredient field
+        function addIngredient() {
+            const list = document.getElementById('ingredientsList');
+            const newField = document.createElement('div');
+            newField.className = 'ingredient-item';
+            newField.innerHTML = '<input type="text" placeholder="e.g., 1 tbsp olive oil">';
+            list.appendChild(newField);
+        }
+
+        // Voting functionality
+        function vote(button) {
+            const voteSection = button.parentElement;
+            const countSpan = voteSection.querySelector('.vote-count');
+            let count = parseInt(countSpan.textContent.replace(/[^0-9]/g, ''));
+            count++;
+            countSpan.textContent = count.toLocaleString() + ' votes';
+            
+            button.style.transform = 'scale(1.2)';
+            button.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+            button.innerHTML = '<span>✅</span><span>Voted!</span>';
+            button.disabled = true;
+            
+            setTimeout(() => {
+                button.style.transform = 'scale(1)';
+            }, 200);
+        }
+
+        // Scroll functions
+        function scrollToForm() {
+            document.getElementById('recipeForm').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function scrollToLeaderboard() {
+            document.getElementById('leaderboard').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Form submission
+        document.querySelector('form')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('🎉 Recipe submitted successfully! It will be live after review. Good luck! 🏆');
+        });
+    </script>
+</body>
+</html>
